@@ -1,0 +1,47 @@
+[
+  {
+    "lab_slug": "hanyang-escml",
+    "faculty_name": "Yang-Kook Sun",
+    "openalex_author_id": "A5043316802",
+    "orcid": "0000-0002-0117-0170",
+    "institution_id": "I4575257",
+    "institution_name": "Hanyang University",
+    "evidence_url": "https://orcid.org/0000-0002-0117-0170"
+  },
+  {
+    "lab_slug": "snu-mest",
+    "faculty_name": "Jang Wook Choi",
+    "openalex_author_id": "A5091329617",
+    "orcid": "0000-0001-8783-0901",
+    "institution_id": "I139264467",
+    "institution_name": "Seoul National University",
+    "evidence_url": "https://mest.snu.ac.kr/논문/"
+  },
+  {
+    "lab_slug": "snu-aeml",
+    "faculty_name": "Kisuk Kang",
+    "openalex_author_id": "A5073090248",
+    "orcid": "0000-0002-8696-1886",
+    "institution_id": "I139264467",
+    "institution_name": "Seoul National University",
+    "evidence_url": "https://orcid.org/0000-0002-8696-1886"
+  },
+  {
+    "lab_slug": "unist-cho",
+    "faculty_name": "Jaephil Cho",
+    "openalex_author_id": "A5037450342",
+    "orcid": "0000-0002-3890-1432",
+    "institution_id": "I48566637",
+    "institution_name": "Ulsan National Institute of Science and Technology",
+    "evidence_url": "https://orcid.org/0000-0002-3890-1432"
+  },
+  {
+    "lab_slug": "hanyang-aetl",
+    "faculty_name": "Hansu Kim",
+    "openalex_author_id": "A5003479543",
+    "orcid": "0000-0001-9658-1687",
+    "institution_id": "I4575257",
+    "institution_name": "Hanyang University",
+    "evidence_url": "https://orcid.org/0000-0001-9658-1687"
+  }
+]

@@ -1,0 +1,35 @@
+name: Discover five-year lab papers
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 2 * * 1'
+
+concurrency:
+  group: lablink-paper-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    if: vars.CRAWLER_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm papers:discover -- --stage
+        env:
+          CRAWLER_CONTACT: ${{ vars.CRAWLER_CONTACT }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          PAPER_YEAR_FROM: '2022'
+          PAPER_YEAR_TO: '2026'

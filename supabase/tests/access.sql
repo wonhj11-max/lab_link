@@ -15,6 +15,9 @@ do $$ begin
  if has_function_privilege(current_user,'public.claim_crawl_job()','EXECUTE') then raise exception 'Browser can execute crawler RPC'; end if;
  if has_function_privilege(current_user,'public.list_paper_candidates(integer)','EXECUTE') then raise exception 'Browser can list paper candidates'; end if;
  if has_function_privilege(current_user,'public.approve_paper_candidate(uuid,jsonb)','EXECUTE') then raise exception 'Browser can approve paper candidates'; end if;
+ if has_function_privilege(current_user,'public.stage_discovered_papers(text,text,text,jsonb,integer,integer)','EXECUTE') then raise exception 'Browser can stage discovered papers'; end if;
+ if not has_function_privilege(current_user,'public.list_paper_review_queue(text,integer,integer)','EXECUTE') then raise exception 'Authenticated user cannot list review queue'; end if;
+ if not has_function_privilege(current_user,'public.submit_paper_review_vote(uuid,text,text)','EXECUTE') then raise exception 'Authenticated user cannot submit review vote'; end if;
 end $$;
 select public.send_proposal('Temporary proposal testing recipient-only access.','00000000-2222-4000-8000-000000000001',null);
 select set_config('request.jwt.claim.sub','00000000-1111-4000-8000-000000000003',true);
@@ -33,6 +36,8 @@ set local role anon;
 do $$ begin
  if has_schema_privilege(current_user,'private','USAGE') then raise exception 'Anonymous private schema access'; end if;
  if has_function_privilege(current_user,'public.send_proposal(text,uuid,uuid)','EXECUTE') then raise exception 'Anonymous proposal creation'; end if;
+ if not has_function_privilege(current_user,'public.list_paper_review_queue(text,integer,integer)','EXECUTE') then raise exception 'Anonymous review queue is not readable'; end if;
+ if has_function_privilege(current_user,'public.submit_paper_review_vote(uuid,text,text)','EXECUTE') then raise exception 'Anonymous paper review voting'; end if;
  if exists(select 1 from public.labs where publication_state<>'published') then raise exception 'Draft lab exposed'; end if;
 end $$;
 reset role;

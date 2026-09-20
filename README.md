@@ -36,7 +36,9 @@ VITE_SUPABASE_ANON_KEY=YOUR_PUBLIC_KEY
 
    - `supabase/migrations/202609170001_initial.sql`
    - `supabase/migrations/202609180002_hardening.sql`
+   - `supabase/migrations/202609200003_existing_db_extensions.sql`
    - `supabase/migrations/202609200004_paper_review_pipeline.sql`
+   - `supabase/migrations/202609210005_paper_discovery_review.sql`
    - `supabase/seeds/pilot-labs.sql` (시범 데이터가 필요할 때만)
 
 3. 앱의 `.env.local`에 URL과 publishable/anon 키를 넣습니다.
@@ -80,6 +82,16 @@ node pipeline/review.mjs reject CANDIDATE_UUID --reviewer OPERATOR --note "반�
 ```
 
 승인은 논문과 연구실 연결을 한 트랜잭션에서 만들고 `published`로 전환합니다. 요약은 근거가 `abstract` 또는 `full_text`로 지정된 경우에만 저장되며, 교신저자 `confirmed` 표시는 HTTPS 증거 URL이 있을 때만 허용됩니다. 모든 승인·반려는 `private.audit_logs`에 기록됩니다.
+
+### 최근 5개년 논문 조사
+
+`pipeline/lab-paper-sources.json`에는 5개 파일럿 연구실 책임교수의 OpenAlex Author ID, ORCID, 현재 소속과 검토 근거 URL을 저장합니다. 다음 명령은 2022~2026년 DOI 논문을 수집해 `work/paper-discovery.json`을 만듭니다.
+
+```bash
+pnpm papers:discover
+```
+
+GitHub Actions의 `Discover five-year lab papers` 워크플로는 같은 조사를 수행하고 서비스 키로 후보를 Supabase에 적재합니다. 후보는 공개 논문으로 전환되지 않으며 `/paper-review`에서 제목·저자·DOI·소속 근거를 확인할 수 있습니다. 로그인한 사용자는 `논문 확인`, `보류`, `대상 제외` 의견을 남길 수 있고, 실제 공개는 기존 운영자 승인 RPC를 거쳐야 합니다.
 
 ## Cloudflare Pages 배포
 

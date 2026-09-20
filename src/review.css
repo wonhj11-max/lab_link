@@ -1,0 +1,60 @@
+.review-progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 20px;
+}
+.review-progress > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid var(--line);
+}
+.review-progress > div:last-child { border-right: 0; }
+.review-progress strong { color: var(--accent); font-size: 24px; }
+.review-progress span { color: var(--muted); font-size: 11px; }
+.review-filters {
+  display: grid;
+  grid-template-columns: 220px 150px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.review-filters select, .review-filters input { margin: 0; }
+.review-list { display: grid; gap: 14px; }
+.paper-review-card {
+  padding: 23px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.paper-review-card.reviewed { border-left: 4px solid #8b85df; }
+.paper-review-card h2 { margin: 10px 0; font-size: 17px; line-height: 1.55; }
+.paper-meta { display: flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 11px; }
+.paper-meta span + span::before { margin-right: 8px; content: '·'; }
+.paper-authors { margin-bottom: 8px; color: #74798c; font-size: 12px; }
+.paper-links { display: flex; flex-wrap: wrap; gap: 15px; }
+.paper-links a { color: var(--accent); font-size: 12px; }
+.review-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.review-actions .selected { border-color: transparent; color: #fff; }
+.review-actions .confirm.selected { background: #39845d; }
+.review-actions .hold.selected { background: #a57927; }
+.review-actions .exclude.selected { background: #a34e58; }
+@media (max-width: 850px) {
+  .review-filters { grid-template-columns: 1fr 1fr; }
+  .review-filters input { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .review-progress { grid-template-columns: 1fr; padding: 0; }
+  .review-progress > div { padding: 13px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .review-progress > div:last-child { border-bottom: 0; }
+  .review-filters { grid-template-columns: 1fr; }
+  .review-filters input { grid-column: auto; }
+  .review-actions { flex-wrap: wrap; }
+  .paper-review-card { padding: 19px; }
+}

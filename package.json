@@ -10,7 +10,8 @@
     "test": "node --test pipeline/*.test.mjs",
     "crawl:dry": "node pipeline/worker.mjs --dry-run",
     "crawl": "node pipeline/worker.mjs",
-    "papers:list": "node pipeline/review.mjs list"
+    "papers:list": "node pipeline/review.mjs list",
+    "papers:discover": "node pipeline/discover-papers.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
