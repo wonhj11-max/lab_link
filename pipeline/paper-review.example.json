@@ -1,0 +1,15 @@
+{
+  "title": "Verified paper title",
+  "year": 2026,
+  "journal": "Verified journal name",
+  "doi": "10.0000/example",
+  "source_url": "https://doi.org/10.0000/example",
+  "faculty_name": "Professor name as shown in evidence",
+  "corresponding_status": "unknown",
+  "evidence_url": null,
+  "affiliation_scope": "unverified",
+  "summary": null,
+  "summary_basis": null,
+  "reviewer": "operator-name",
+  "review_note": "Checked DOI landing page and the lab publication page."
+}

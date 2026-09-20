@@ -1,0 +1,8 @@
+[
+ {"professor":"최장욱","url":"https://mest.snu.ac.kr/prof-jang-wook-choi/","allowed_host":"mest.snu.ac.kr","category":"biography","enabled":true,"expected_tokens":["Jang Wook Choi"]},
+ {"professor":"최장욱","url":"https://mest.snu.ac.kr/논문/","allowed_host":"mest.snu.ac.kr","category":"publications","enabled":true,"expected_tokens":["Jang Wook Choi"]},
+ {"professor":"최장욱","url":"https://mest.snu.ac.kr/alumni/","allowed_host":"mest.snu.ac.kr","category":"alumni","enabled":true,"expected_tokens":["Mest period"]},
+ {"professor":"강기석","url":"https://energylab.snu.ac.kr/professor/professor.html","allowed_host":"energylab.snu.ac.kr","category":"biography","enabled":true,"expected_tokens":["Kisuk","강기석"]},
+ {"professor":"선양국","url":"http://escml.hanyang.ac.kr/sub/sub01_01.php","allowed_host":"escml.hanyang.ac.kr","category":"research","allow_http":true,"enabled":true,"expected_tokens":["Energy Storage","Sun","battery"]},
+ {"professor":"김한수","url":"https://battery.hanyang.ac.kr/lab4","allowed_host":"battery.hanyang.ac.kr","category":"research","enabled":true,"expected_tokens":["김한수","Hansu Kim"]}
+]
