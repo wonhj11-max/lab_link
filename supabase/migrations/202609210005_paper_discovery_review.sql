@@ -73,7 +73,7 @@ begin
   for candidate in select value from jsonb_array_elements(p_candidates)
   loop
     candidate_doi := lower(trim(candidate->>'doi'));
-    if candidate_doi !~* '^10\.[0-9]{4,9}/\S+$' then continue; end if;
+    if candidate_doi !~* '^10[.][0-9]{4,9}/[^[:space:]]+$' then continue; end if;
     if (candidate->>'year')::integer not between p_year_from and p_year_to then continue; end if;
 
     insert into private.paper_candidates(
