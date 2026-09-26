@@ -1,0 +1,34 @@
+name: Official publication bibliography
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: official-publication-bibliography
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Collect ESCML official lists and DOI metadata
+        run: node pipeline/official-publications.mjs --stage
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          CRAWLER_CONTACT: ${{ vars.CRAWLER_CONTACT }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-publication-checkpoint
+          path: work/official-publications/
+          retention-days: 30
