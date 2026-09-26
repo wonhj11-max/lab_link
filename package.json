@@ -12,6 +12,7 @@
     "crawl": "node pipeline/worker.mjs",
     "papers:list": "node pipeline/review.mjs list",
     "papers:discover": "node pipeline/discover-papers.mjs"
+    ,"papers:scale": "node pipeline/scale-publications.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
