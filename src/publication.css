@@ -1,3 +1,10 @@
+.publication-all-authors { margin: 12px 0 16px; font-size: 12px; line-height: 1.8; }
+.publication-all-authors summary { cursor: pointer; color: var(--accent); }
+.publication-all-authors ol { padding-left: 22px; columns: 2; }
+.publication-all-authors li { break-inside: avoid; overflow-wrap: anywhere; }
+.publication-all-authors small { color: var(--muted); }
+.publication-if-source { display: inline-block; margin-bottom: 14px; font-size: 11px; }
+@media (max-width: 600px) { .publication-all-authors ol { columns: 1; } }
 .detail-section { margin-top: 22px; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
 .section-heading h2 { margin: 3px 0 0; }
