@@ -1,0 +1,42 @@
+name: Publish exact official bibliographies
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 3 * * 2'
+
+permissions:
+  contents: read
+concurrency:
+  group: lablink-scale-publications
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: vars.CRAWLER_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Match official lists and publish exact bibliography
+        run: pnpm papers:scale -- --publish
+        env:
+          CRAWLER_CONTACT: ${{ vars.CRAWLER_CONTACT }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          PAPER_YEAR_FROM: '2022'
+          PAPER_YEAR_TO: '2026'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scale-publication-checkpoint
+          path: work/scale-publications/
+          retention-days: 30
