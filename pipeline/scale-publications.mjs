@@ -7,12 +7,13 @@ import { cleanAuthorName as cleanName, extractAuthorRoles as roleNames, extractD
 const YEAR_FROM = Number(process.env.PAPER_YEAR_FROM || 2022);
 const YEAR_TO = Number(process.env.PAPER_YEAR_TO || 2026);
 const shouldPublish = process.argv.includes('--publish');
-const selected = process.env.LAB_SLUG?.split(',').filter(Boolean) || ['snu-mest', 'snu-aeml'];
+const selected = process.env.LAB_SLUG?.split(',').filter(Boolean) || ['hanyang-escml', 'snu-mest', 'snu-aeml'];
 const contact = process.env.CRAWLER_CONTACT || 'https://github.com/wonhj11-max/lab_link';
 const root = 'work/scale-publications';
 await mkdir(root, { recursive: true });
 
 const configs = {
+  'hanyang-escml': { faculty: 'Yang-Kook Sun', source: 'http://escml.hanyang.ac.kr/sub/sub04_01.php', kind: 'escml' },
   'snu-mest': { faculty: 'Jang Wook Choi', source: 'https://mest.snu.ac.kr/%EB%85%BC%EB%AC%B8/', kind: 'mest' },
   'snu-aeml': { faculty: 'Kisuk Kang', source: 'https://energylab.snu.ac.kr/publications/journals.html', kind: 'aeml' },
 };
@@ -87,6 +88,23 @@ async function aemlEntries(config) {
   }
   return rows;
 }
+async function escmlEntries(config) {
+  const rows = [];
+  for (let year = YEAR_FROM; year <= YEAR_TO; year += 1) {
+    const url = `${config.source}?year=${year}`;
+    const $ = load(await fetchText(url));
+    $('a').each((_index, element) => {
+      const node = $(element);
+      const title = node.find('.info .tit').text().replace(/\s+/g, ' ').trim();
+      const citation = node.find('.info .opt').text().replace(/\s+/g, ' ').trim();
+      const href = node.attr('href')?.trim();
+      if (!title || !citation || !href || !/^https?:\/\//i.test(href)) return;
+      rows.push({ lab_slug: 'hanyang-escml', faculty: config.faculty, listing_year: year, title, journal_citation: citation, official_authors: '', source_url: url, publisher_source_url: href, doi: doiFrom(href) });
+    });
+    await pause(250);
+  }
+  return rows;
+}
 async function enrich(row) {
   const key = createHash('sha256').update(`${row.lab_slug}\n${row.doi || normalize(row.title)}`).digest('hex');
   const file = `${root}/${key}.json`;
@@ -108,7 +126,7 @@ const report = { generated_at: new Date().toISOString(), year_from: YEAR_FROM, y
 const db = shouldPublish ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY, { auth: { persistSession: false, autoRefreshToken: false } }) : null;
 for (const slug of selected) {
   const config = configs[slug]; if (!config) throw Error(`Unsupported LAB_SLUG: ${slug}`);
-  const sourceRows = config.kind === 'mest' ? await mestEntries(config) : await aemlEntries(config);
+  const sourceRows = config.kind === 'mest' ? await mestEntries(config) : config.kind === 'aeml' ? await aemlEntries(config) : await escmlEntries(config);
   const entries = [];
   for (const row of sourceRows) { entries.push(await enrich(row)); await pause(150); }
   const matched = entries.filter(entry => entry.metadata_status === 'matched');
