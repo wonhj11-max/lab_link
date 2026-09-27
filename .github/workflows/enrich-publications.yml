@@ -1,0 +1,34 @@
+name: Enrich published paper abstracts
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 18 * * 2'
+concurrency:
+  group: lablink-publication-enrichment
+  cancel-in-progress: false
+jobs:
+  enrich:
+    if: vars.CRAWLER_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Enrich verified papers from DOI abstracts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: pnpm papers:enrich
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publication-enrichment-checkpoint
+          path: work/publication-enrichment/
