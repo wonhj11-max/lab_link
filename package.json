@@ -11,8 +11,9 @@
     "crawl:dry": "node pipeline/worker.mjs --dry-run",
     "crawl": "node pipeline/worker.mjs",
     "papers:list": "node pipeline/review.mjs list",
-    "papers:discover": "node pipeline/discover-papers.mjs"
-    ,"papers:scale": "node pipeline/scale-publications.mjs"
+    "papers:discover": "node pipeline/discover-papers.mjs",
+    "papers:scale": "node pipeline/scale-publications.mjs",
+    "papers:enrich": "node pipeline/enrich-publications.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
